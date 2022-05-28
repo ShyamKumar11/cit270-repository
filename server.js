@@ -8,6 +8,7 @@ const bodyParser = require("body-parser"); // body parser is called middleware
 
 const {createClient} = require("redis");
 const { response } = require("express");
+const { request } = require("express");
 
 const redisClient = createClient ( // This code will run when I start redis // THis will connect to the credentails
 
@@ -69,6 +70,21 @@ const validatepassword = async (request, response)=>{
 
 }
 
+
+
+const savePassowrd = async (request, response)=>{
+    const clearTextPassword = request.body.password;
+    const hasedTextPassword = md5(clearTextPassword); // self documenting code, the code tells you a story of what and why
+    await redisClient.hSet("passwords", request.body.username, hasedTextPassword);
+    response.status(200); // Status 200 menas okay 
+    response.send({result:"Saved"});
+
+
+}
+
+// async function save password (request,response)
+
+
 app.get("/" , (request, response)=>{  //Every tinme something calls your API that is a request. 
     response.send("Hello"); // A response is when an API gives the required information.
 })
@@ -79,11 +95,14 @@ app.post("/login", validatepassword);
 
 // Create a post where you would create a new user and password
 
-app.post ('/signup; signup');
+    
+
+app.post ('/signup; savePassowrd');
+app.post('/login', validatepassword);
 const singup =  (request, response)=>{
 
 
-
+//open ssl req -nodes -new -x509 -keyout server.key -out server.cert
 
 
 }
