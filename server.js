@@ -1,14 +1,15 @@
 const express = require("express"); // importing library 
 
 
-const port = 3000; // making a variable "Const"
+const port = 4043; // making a variable "Const"
 const app = express(); // use the library  (express is a function) calling express function that returns an object
+const https = require("https");
+const fs = require("fs")
 const md5 = require("md5") // importing md5 libarary 
 const bodyParser = require("body-parser"); // body parser is called middleware
 
 const {createClient} = require("redis");
-const { response } = require("express");
-const { request } = require("express");
+
 
 const redisClient = createClient ( // This code will run when I start redis // THis will connect to the credentails
 
@@ -23,10 +24,15 @@ socket:{
 
 app.use(bodyParser.json()); // use the middleware (call it beofre anything happens on each request) .jason is a function. 
 
-app.listen (port, async()=>{
-    await redisClient.connect(); // Creating TCP socket with redis. @
-    console.log("listening on port: "+port)  // waiting for network request.
-})  // listening    
+
+    https.createServer({
+        key: fs.readFileSync("server.key"),
+        cert: fs.readFileSync("server.cert"),
+        passphrase: "P@ssw0rd",
+    }, app).listen (port, async()=>{
+        await redisClient.connect(); // Creating TCP socket with redis. @
+        console.log("listening on port: "+port)  // waiting for network request.
+    }) // listening    
 
 
 // app.get('/',(request,response)=>
@@ -49,7 +55,7 @@ app.listen (port, async()=>{
 const validatepassword = async (request, response)=>{
     const requesthasedpassword = md5(request.body.password);
     console.log ("The request hashed password "+requesthasedpassword);
-    const redishashedpassword = await redisClient.hmGet("credentials", request.body.userName); // read password from redis
+    const redishashedpassword = await redisClient.hmGet('credentials', request.body.userName); // read password from redis
     console.log ("The redis hashed password "+redishashedpassword);
     const  loginRequest = request.body;
     console.log("Request Body", JSON.stringify(request.body));
@@ -75,9 +81,9 @@ const validatepassword = async (request, response)=>{
 const savePassowrd = async (request, response)=>{
     const clearTextPassword = request.body.password;
     const hasedTextPassword = md5(clearTextPassword); // self documenting code, the code tells you a story of what and why
-    await redisClient.hSet("passwords", request.body.username, hasedTextPassword);
+    await redisClient.hSet('credentials', request.body.username, hasedTextPassword);
     response.status(200); // Status 200 menas okay 
-    response.send({result:"Saved"});
+    response.send("Saved");
 
 
 }
@@ -97,13 +103,6 @@ app.post("/login", validatepassword);
 
     
 
-app.post ('/signup; savePassowrd');
-app.post('/login', validatepassword);
-const singup =  (request, response)=>{
+app.post ("/signup", savePassowrd);
 
-
-//open ssl req -nodes -new -x509 -keyout server.key -out server.cert
-
-
-}
 
