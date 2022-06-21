@@ -1,26 +1,20 @@
-const express = require("express"); // importing library 
-
-
-const port = 4043; // making a variable "Const"
+const express = require("express"); // importing library
+const https = require("https"); 
+const port = 443; // making a variable "Const"
 const app = express(); // use the library  (express is a function) calling express function that returns an object
-const https = require("https");
 const fs = require("fs")
 const md5 = require("md5") // importing md5 libarary 
 const bodyParser = require("body-parser"); // body parser is called middleware
-
 const {createClient} = require("redis");
-
-
 const redisClient = createClient ( // This code will run when I start redis // THis will connect to the credentails
 
 {
-socket:{
-    port:6379,
-    host:"127.0.0.1", 
- }, 
-
+    url: 'redis://default:mypassword1@10.128.0.2:6379',
+    socket:{
+        port:6379,
+        host:"127.0.0.1", 
+    }
 }); // this creates a connection to the redis database
-
 
 app.use(bodyParser.json()); // use the middleware (call it beofre anything happens on each request) .jason is a function. 
 
