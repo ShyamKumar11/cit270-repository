@@ -10,10 +10,10 @@ const redisClient = createClient ( // This code will run when I start redis // T
 
 {
     url: 'redis://default:mypassword1@10.128.0.2:6379',
-    socket:{
-        port:6379,
-        host:"127.0.0.1", 
-    }
+    // socket:{
+    //     port:6379,
+    //     host:"127.0.0.1", 
+    // }
 }); // this creates a connection to the redis database
 
 app.use(bodyParser.json()); // use the middleware (call it beofre anything happens on each request) .jason is a function. 
