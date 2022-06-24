@@ -10,13 +10,13 @@ const redisClient = createClient ( // This code will run when I start redis // T
 
 {
     url: 'redis://default:@10.128.0.2:6379',
-    // socket:{
-    //     port:6379,
-    //     host:"127.0.0.1", 
-    // }
+    socket:{
+        port:6379,
+        host:"127.0.0.1", 
+    }
 }); // this creates a connection to the redis database
 
-redisClient.connect();
+// redisClient.connect();
 
 app.use(bodyParser.json()); // use the middleware (call it beofre anything happens on each request) .jason is a function. 
 
@@ -26,7 +26,7 @@ app.use(bodyParser.json()); // use the middleware (call it beofre anything happe
         cert: fs.readFileSync("server.cert"),
         passphrase: "P@ssw0rd",
     }, app).listen (port, async()=>{
-        // await redisClient.connect(); // Creating TCP socket with redis. @
+        await redisClient.connect(); // Creating TCP socket with redis. @
         console.log("listening on port: "+port)  // waiting for network request.
     }) // listening    
 
