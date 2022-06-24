@@ -1,1 +1,1 @@
-curl -d "@signup.json" -X POST -H "Content-Type:application/json" https://shyam.cit270.com:4043/signup
+curl --insecure -d "@signup.json" -X POST -H "Content-Type:application/json" https://shyam-nodejs.cit270.com/signup

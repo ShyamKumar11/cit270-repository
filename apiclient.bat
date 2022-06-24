@@ -1,5 +1,5 @@
 
-curl -d "@data.json" -X POST -H "Content-Type:application/json" https://shyam.cit270.com:4043/login
+curl --insecure -d "@data.json" -X POST -H "Content-Type:application/json" https://shyam-nodejs.cit270.com/login
 
 
 
