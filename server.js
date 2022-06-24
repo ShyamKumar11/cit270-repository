@@ -9,12 +9,14 @@ const {createClient} = require("redis");
 const redisClient = createClient ( // This code will run when I start redis // THis will connect to the credentails
 
 {
-    url: 'redis://:@10.128.0.2:6379',
-    // socket:{
-    //     port:6379,
-    //     host:"127.0.0.1", 
-    // }
+    url: 'redis://default:@10.128.0.2:6379',
+    socket:{
+        port:6379,
+        host:"127.0.0.1", 
+    }
 }); // this creates a connection to the redis database
+
+redisClient.connect();
 
 app.use(bodyParser.json()); // use the middleware (call it beofre anything happens on each request) .jason is a function. 
 
@@ -24,7 +26,7 @@ app.use(bodyParser.json()); // use the middleware (call it beofre anything happe
         cert: fs.readFileSync("server.cert"),
         passphrase: "P@ssw0rd",
     }, app).listen (port, async()=>{
-        await redisClient.connect(); // Creating TCP socket with redis. @
+        // await redisClient.connect(); // Creating TCP socket with redis. @
         console.log("listening on port: "+port)  // waiting for network request.
     }) // listening    
 
@@ -47,10 +49,10 @@ app.use(bodyParser.json()); // use the middleware (call it beofre anything happe
 
 
 const validatepassword = async (request, response)=>{
-    const requesthasedpassword = md5(request.body.password);
-    console.log ("The request hashed password "+requesthasedpassword);
+    const requesthashedpassword = md5(request.body.password);
+    // console.log ("The request hashed password "+requesthasedpassword);
     const redishashedpassword = await redisClient.hmGet('credentials', request.body.userName); // read password from redis
-    console.log ("The redis hashed password "+redishashedpassword);
+    // console.log ("The redis hashed password "+redishashedpassword);
     const  loginRequest = request.body;
     console.log("Request Body", JSON.stringify(request.body));
     // search database username and retrive current password
@@ -58,7 +60,7 @@ const validatepassword = async (request, response)=>{
     // Compare the hash version of the password that was sent with the hashed version from the database 
 
 
-    if (requesthasedpassword==redishashedpassword){
+    if (requesthashedpassword == redishashedpassword){
         response.status(200);
         response.send("Welcome");
     } else{
