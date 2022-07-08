@@ -69,7 +69,7 @@ metadata:
 spec:
   selector:
     app: shyam-cit270
-  type: Loadbalancer
+  type: LoadBalancer
   ports:
   - port: 80
     targetPort: 3000  
