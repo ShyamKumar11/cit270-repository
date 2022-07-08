@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: shyam-cit270
-      # This is hte Dockerhub url to my image
+      #This is hte Dockerhub url to my image
         image: shyam5887/cit270
         # This is the command to run oncew the container starts
         command: ["pm"]
@@ -45,6 +45,8 @@ spec:
             path: /
           # This is the port to use to see if my API is running
             port: 443
+            #This is the protocol to use to check if my API is running
+            scheme: HTTPS
           initialDelaySeconds: 3
           periodSeconds: 3
         readinessProbe:
@@ -53,5 +55,22 @@ spec:
             path: /
           # This is the port to use to see if my API has started
             port: 443
+          #This is the protocol to use to check if my API has started 
+            scheme: HTTPS
           initialDelaySeconds: 3
           periodSeconds: 3
+
+# This is the start of a new document for the load balancer
+
+apiVersion: v1
+kind: Services
+metadata:
+  name: shyam-cit270-loadbalancer 
+spec:
+  selector:
+    app: shyam-cit270
+  type: Loadbalancer
+  ports:
+    - port: 80
+    targetPort: 3000  
+    
