@@ -1,60 +1,57 @@
 
-# vesrion of kubernetes API we are using
-apivVrsion: apps/v1
-#This can be a satefulset, or a deployment, deployment dosent need 
+#0 2022 Dex Davenport
+# Version of Kubernetes API we are using
+apiVersion: apps/v1
+# This can be a statefulset, or a deploument, a deploument doesnt need a hard drive that sticks around
 kind: Deployment
-metadata: 
-# This is the name of my deployment
-name: shyam-cit270
+metadata:
+# This is the name of my deploymeny
+  name: shyam-cit270
 spec:
   replicas: 1
-  selector: 
-    matchLabels: 
+  selector:
+    matchLabels:
       app: shyam-cit270
-template: 
-  metadata: 
-    lables: 
-      app: shyam-cit270
-  spec: 
-    containers: 
+  template:
+    metadata:
+      labels:
+        app: shyam-cit270
+    spec:
+      containers:
       - name: shyam-cit270
-
-
-      image: shyam5887/cit270
-    # this is the DockerHub url to my image
-      command: ["npm"]
-    #These are the commands to runonce the container starts
-      args: ["run", "start"]
-    #This is the port my container is listening on, ex: 443
-      ports:
-        - containerPort: 443
-      resources:
-        limits: 
-      #This is the maz CPU (in cores) my container can use
-        cpu: "125"
-      #This is the max memory (millibytes)
-        memory: "500Mi"
-      request:
-      #This is the minimum CPU(in cores) my container can use
-        cpu: ".1"
-      #this is the minimum memory (in millibytes)
-        memory: "250Mi"
-
-    livenessProbe:
-      httpGet:
-       #This is the url to call to see if my API is running
-        path: /
-       #This is the url to call to see if my API is running
-        port: 443
-      initalDelaySeconds: 3
-      periodSeconds: 3
-    readinessProbe:
-
-      httpGet:
-
-        path: /
-      #This is the url to call to see if my API has started
-        port: 443
-      #This is the port to use to see if my API has started
-      initialDelaySeconds: 3
-      periodSeconds: 3    
+      # This is hte Dockerhub url to my image
+        image: shyam5887/cit270
+        # This is the command to run oncew the container starts
+        command: ["pm"]
+        # These are the argumentst to pass to the command when the 
+        args: ["run","start"]
+        # This is the port my containter is listening on, ex 443 or
+        ports:
+          - containerPort: 443
+        resources:
+          limits:
+          # This is the max CPU (in cores) my container can use
+            cpu: ".125"
+          # This is the mac memory (in Millabytes)
+            memory: "500Mi"
+          requests:
+          # This is the minimum CPU (in cores) my container can use
+            cpu: ".1"
+          # This is the minimum memory (in Millabytes)
+            memory: "250Mi"
+        livenessProbe:
+          httpGet:
+          # This is the url to call to see if my API  is running
+            path: /
+          # This is the port to use to see if my API is running
+            port: 443
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+          # This is the url to call to see fi my API has started
+            path: /
+          # This is the port to use to see if my API has started
+            port: 443
+          initialDelaySeconds: 3
+          periodSeconds: 3
