@@ -1,0 +1,60 @@
+
+# vesrion of kubernetes API we are using
+apivVrsion: apps/v1
+#This can be a satefulset, or a deployment, deployment dosent need 
+kind: Deployment
+metadata: 
+# This is the name of my deployment
+name: shyam-cit270
+spec:
+  replicas: 1
+  selector: 
+    matchLabels: 
+      app: shyam-cit270
+template: 
+  metadata: 
+    lables: 
+      app: shyam-cit270
+  spec: 
+    containers: 
+      - name: shyam-cit270
+
+
+      image: shyam5887/cit270
+    # this is the DockerHub url to my image
+      command: ["npm"]
+    #These are the commands to runonce the container starts
+      args: ["run", "start"]
+    #This is the port my container is listening on, ex: 443
+      ports:
+        - containerPort: 443
+      resources:
+        limits: 
+      #This is the maz CPU (in cores) my container can use
+        cpu: "125"
+      #This is the max memory (millibytes)
+        memory: "500Mi"
+      request:
+      #This is the minimum CPU(in cores) my container can use
+        cpu: ".1"
+      #this is the minimum memory (in millibytes)
+        memory: "250Mi"
+
+    livenessProbe:
+      httpGet:
+       #This is the url to call to see if my API is running
+        path: /
+       #This is the url to call to see if my API is running
+        port: 443
+      initalDelaySeconds: 3
+      periodSeconds: 3
+    readinessProbe:
+
+      httpGet:
+
+        path: /
+      #This is the url to call to see if my API has started
+        port: 443
+      #This is the port to use to see if my API has started
+      initialDelaySeconds: 3
+      periodSeconds: 3    
