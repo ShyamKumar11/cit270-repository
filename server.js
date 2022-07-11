@@ -10,10 +10,10 @@ const redisClient = createClient ( // This code will run when I start redis // T
 
 {
     url: 'redis://default:@35.222.63.254:6379',
-    // socket:{
-    //     port:6379,
-    //     host:"127.0.0.1", 
-    // }
+    socket:{
+        port:6379,
+        host:"127.0.0.1", 
+    }
 }); // this creates a connection to the redis database
 
 // redisClient.connect();
