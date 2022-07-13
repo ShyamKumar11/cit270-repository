@@ -1,6 +1,6 @@
 const express = require("express"); // importing library
 const https = require("https"); 
-const port = 443; // making a variable "Const"
+const port = 3000; // making a variable "Const"
 const app = express(); // use the library  (express is a function) calling express function that returns an object
 const fs = require("fs")
 const md5 = require("md5") // importing md5 libarary 
@@ -18,16 +18,19 @@ const redisClient = createClient ( // This code will run when I start redis // T
 app.use(bodyParser.json()); // use the middleware (call it beofre anything happens on each request) .jason is a function. 
 
 
-    https.createServer({
-        key: fs.readFileSync("server.key"),
-        cert: fs.readFileSync("server.cert"),
-        passphrase: "P@ssw0rd",
-    }, app).listen (port, async()=>{
-        await redisClient.connect(); // Creating TCP socket with redis. @
-        console.log("listening on port: "+port)  // waiting for network request.
-    }) // listening    
+    // https.createServer({
+    //     key: fs.readFileSync("server.key"),
+    //     cert: fs.readFileSync("server.cert"),
+    //     passphrase: "P@ssw0rd",
+    // }, app).listen (port, async()=>{
+    //     await redisClient.connect(); // Creating TCP socket with redis. @
+    //     console.log("listening on port: "+port)  // waiting for network request.
+    // }) // listening    
 
-
+app.listen(port, async()=>{
+    await redisClient.connect();
+    console.log('Listening on port: ',port);
+});
 // app.get('/',(request,response)=>
 // {res.send("Hello");
 // hm  // slash / means there are no parameters. 
