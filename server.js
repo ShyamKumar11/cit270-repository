@@ -9,7 +9,7 @@ const {createClient} = require("redis");
 const redisClient = createClient ( // This code will run when I start redis // THis will connect to the credentails
 
 {
-    url: 'redis://default:@35.222.63.254:6379',
+    url: 'redis://35.222.63.254:6379',
  
 }); // this creates a connection to the redis database
 
