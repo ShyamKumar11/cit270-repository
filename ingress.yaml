@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: Shyam-ingress
+  namespace: default
+  annotations: 
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-cluster-issuer"
+spec:
+  tls:
+  - hosts:
+    - shyam-nodejs.cit270.com
+    secretName: shyam-tls
+  rules:
+  - host: shyam-nodejs.cit270.com
+    http: 
+      paths:
+      - backend:
+          serviceName: shyam-cit270-loadbalancer
+          servicePort: 80
